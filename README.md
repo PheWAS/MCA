@@ -1,19 +1,18 @@
-# MCA
+# Tutorial: Implimenting an EHR phenotype for multiple congential anomalies (MCA)
 
-# Project Name
+## Introduction
 
-Multiple congential anomalies (MCA) phenotyping
+In this tutorial, you will learn how to impliment the MCA algorith as described in a forthcoming publication by Brokamp et. al.
 
-## Description
+## Prerequisites
 
-A brief description of your project, its purpose, and what problems it solves. Explain why it’s useful and highlight any key features.
+To impliment this method, you will need to have a file of ICD codes and patient identifiers. This tutorial includes a file with sythetic data which will allow you to try the method out.
 
-## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+## Step 1: Setting Up Your Environment
 
-## Installation
+1. **Create a new directory for your project**:
+
+   ```bash
+   mkdir flask-tutorial
+   cd flask-tutorial
