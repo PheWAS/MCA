@@ -1,4 +1,6 @@
-# Tutorial: Implimenting an EHR phenotype for multiple congential anomalies (MCA)
+# Tutorial
+
+Implimenting an EHR phenotype for multiple congential anomalies (MCA)
 
 ## Introduction
 
@@ -16,3 +18,8 @@ To impliment this method, you will need to have a file of ICD codes and patient 
    ```bash
    mkdir flask-tutorial
    cd flask-tutorial
+  
+sample_data <- read.csv("https://github.com/PheWAS/MCA/blob/main/data/sample_ICD_data.csv")
+
+sample_data
+   
