@@ -34,8 +34,75 @@ head(Fake_Data_CM_PhecodeX_table)
 Fake_Data_CM_PhecodeX_table = Fake_Data_CM_PhecodeX_table[,.(uniq_age=uniqueN(AGE_AT_EVENT)),by=c("ID","phecode")]
 head(Fake_Data_CM_PhecodeX_table)
 ```
-## Step 4:Filter down to individuals with at least two instances of a phecode at different ages 
+## Step 4: Filter down to individuals with at least two instances of a phecode at different ages 
 ```{r}
 Fake_Data_CM_PhecodeX_table = Fake_Data_CM_PhecodeX_table %>% filter(uniq_age >= "2")
 head(Fake_Data_CM_PhecodeX_table)
+```
+
+## Step 5: Identify the MCA Phecode population (those with at least two instances of the specific MCA Phecode: CM_766) and create dataframe with MCA Phecode population unique IDs 
+```{r}
+Fake_Data_MCA_Phecode = Fake_Data_CM_PhecodeX_table[ Fake_Data_CM_PhecodeX_table$phecode=="CM_776"]
+Fake_Data_MCA_Phecode
+```
+```{r}
+#Create dataframe that has the unique IDs of individuals in the MCA Phecode population 
+Fake_Data_MCA_Phecode_Unique_IDs_Only <- Fake_Data_MCA_Phecode %>%
+  distinct(ID)
+Fake_Data_MCA_Phecode_Unique_IDs_Only
+```
+## Step 6: To identify the MCA All population create an Organ_System column which indicates which organ system the phecode corresponds to 
+```{r}
+Fake_Data_CM_PhecodeX_table <- Fake_Data_CM_PhecodeX_table %>%
+  mutate(Organ_System = case_when(
+    grepl("^CM_750", phecode) ~ "Nervous",
+    grepl("^CM_751", phecode) ~ "Eye",
+    grepl("^CM_752", phecode) ~ "Ear",
+    grepl("^CM_753", phecode) ~ "FaceNeck",
+    grepl("^CM_754", phecode) ~ "TongueMouthPharynx",
+    grepl("^CM_755", phecode) ~ "SkullFaceJaw",
+    grepl("^CM_757", phecode) ~ "UpperGI",
+    grepl("^CM_758", phecode) ~ "Digestive",
+    grepl("^CM_760", phecode) ~ "Genital",
+    grepl("^CM_761", phecode) ~ "Urinary",
+    grepl("^CM_762", phecode) ~ "Respiratory",
+    grepl("^CM_763", phecode) ~ "Heart",
+    grepl("^CM_764", phecode) ~ "Circulatory",
+    grepl("^CM_765", phecode) ~ "Hip",
+    grepl("^CM_766", phecode) ~ "Feet",
+    grepl("^CM_767", phecode) ~ "Limb",
+    grepl("^CM_768", phecode) ~ "ChestBonyThorax",
+    grepl("^CM_769", phecode) ~ "Spine",
+    grepl("^CM_770", phecode) ~ "Musculoskeletal",
+    grepl("^CM_771", phecode) ~ "Integument",
+    grepl("^CM_772", phecode) ~ "EndocrineGlands",
+    grepl("^CM_773", phecode) ~ "Spleen",
+    grepl("^CM_774", phecode) ~ "SitusInversus",
+    TRUE ~ NA_character_ # default value if no match
+  ))
+
+print(Fake_Data_CM_PhecodeX_table)
+```
+## Step 7: To identify the MCA All population, re-group by IDs and filter to those who have a phecode in at least two unique organ systems and create dataframe with MCA All population unique IDs 
+```{r}
+Fake_Data_MCA_All <- Fake_Data_CM_PhecodeX_table %>%
+  group_by(ID) %>%
+  filter(n_distinct(Organ_System) > 1) %>% 
+  ungroup()
+
+print(Fake_Data_MCA_All)
+```
+```{r}
+Fake_Data_MCA_All_Unique_IDs_Only <- Fake_Data_MCA_All %>%
+  distinct(ID)
+Fake_Data_MCA_All_Unique_IDs_Only
+```
+## Step 8: Combine MCA Phecode and MCA All populations into the MCA Total population and create dataframe with MCA Total population unique IDs 
+```{r}
+#Combine and then pull out distinct IDs
+Fake_Data_MCA_Total_Overlap = rbind(Fake_Data_MCA_Phecode_Unique_IDs_Only, Fake_Data_MCA_All_Unique_IDs_Only)
+
+Fake_Data_MCA_Total_Unique_IDs <- Fake_Data_MCA_Total_Overlap %>%
+  distinct(ID)
+Fake_Data_MCA_Total_Unique_IDs
 ```
