@@ -14,7 +14,8 @@ To impliment this method, you will need to have a file of ICD codes and patient 
 ## Step 1: Read in the ICD table
 
 1. **Read in the ICD table**:
-  
+
+ ```r
 ICDs <- read.csv("https://raw.githubusercontent.com/PheWAS/MCA/refs/heads/main/data/sample_ICD_data.csv",quote="\"")
 
 
